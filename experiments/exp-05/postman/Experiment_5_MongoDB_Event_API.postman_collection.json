@@ -1,0 +1,191 @@
+{
+  "info": {
+    "name": "Experiment 5 - MongoDB Event API",
+    "_postman_id": "b3e0d8fa-5321-4f9e-a89c-d40b92318cf5",
+    "description": "Collection for testing Experiment 5 MongoDB Atlas Mongoose CRUD API endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" },
+    { "key": "eventId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/health"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => pm.response.to.have.status(200));",
+              "pm.test('Database is connected', () => { const json = pm.response.json(); pm.expect(json.data.database).to.eql('connected'); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. GET All Events",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/events"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => pm.response.to.have.status(200));",
+              "pm.test('Response is array', () => { const json = pm.response.json(); pm.expect(Array.isArray(json.data)).to.be.true; });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. POST Create Event",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Cloud & MongoDB Workshop\",\n  \"description\": \"Hands-on session exploring MongoDB Atlas and Mongoose with Express.\",\n  \"date\": \"15 May 2026\",\n  \"time\": \"11:00 AM – 2:00 PM\",\n  \"location\": \"Mumbai\",\n  \"category\": \"Hands-on\",\n  \"tone\": \"bg-teal-50 text-teal-700\"\n}"
+        },
+        "url": "{{baseUrl}}/api/events"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201', () => pm.response.to.have.status(201));",
+              "const json = pm.response.json();",
+              "pm.test('Event created with MongoDB ID', () => { pm.expect(json.data.id).to.be.a('string'); });",
+              "pm.collectionVariables.set('eventId', json.data.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. GET Event by ID",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/events/{{eventId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => pm.response.to.have.status(200));",
+              "const json = pm.response.json();",
+              "pm.test('Event matches ID', () => pm.expect(json.data.id).to.eql(pm.collectionVariables.get('eventId')));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. PUT Update Event",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Advanced Cloud & MongoDB Workshop\",\n  \"description\": \"Updated session covering MongoDB Atlas indexing, transactions, and scaling.\",\n  \"date\": \"16 May 2026\",\n  \"time\": \"10:00 AM – 1:00 PM\",\n  \"location\": \"Navi Mumbai\",\n  \"category\": \"Hands-on\",\n  \"tone\": \"bg-emerald-50 text-emerald-700\"\n}"
+        },
+        "url": "{{baseUrl}}/api/events/{{eventId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => pm.response.to.have.status(200));",
+              "const json = pm.response.json();",
+              "pm.test('Title is updated', () => pm.expect(json.data.title).to.eql('Advanced Cloud & MongoDB Workshop'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. DELETE Event by ID",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/events/{{eventId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 204', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Error Handling - Invalid ObjectId",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/events/invalid-id-123"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 400 for invalid ID format', () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Error Handling - Non-existent Event",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/events/507f1f77bcf86cd799439011"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 404 for missing event', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Error Handling - Invalid POST Payload",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Missing Fields\"\n}"
+        },
+        "url": "{{baseUrl}}/api/events"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 400 for missing required fields', () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

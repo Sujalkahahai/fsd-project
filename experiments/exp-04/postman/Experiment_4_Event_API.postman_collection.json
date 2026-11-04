@@ -1,0 +1,14 @@
+{
+  "info": { "name": "Experiment 4 Event API", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [{ "key": "baseUrl", "value": "http://localhost:5000" }, { "key": "eventId", "value": "tech-fest" }],
+  "item": [
+    { "name": "Health", "request": { "method": "GET", "url": "{{baseUrl}}/api/health" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('Status is 200', () => pm.response.to.have.status(200));"] } }] },
+    { "name": "Get all", "request": { "method": "GET", "url": "{{baseUrl}}/api/events" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('Status is 200', () => pm.response.to.have.status(200));"] } }] },
+    { "name": "Get by ID", "request": { "method": "GET", "url": "{{baseUrl}}/api/events/{{eventId}}" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('Status is 200', () => pm.response.to.have.status(200));"] } }] },
+    { "name": "Create", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"title\":\"Postman Event\",\"description\":\"Created by API\",\"date\":\"1 Jan 2027\",\"time\":\"10:00\",\"location\":\"Mumbai\",\"category\":\"Showcase\"}" }, "url": "{{baseUrl}}/api/events" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('Status is 201', () => pm.response.to.have.status(201));", "pm.collectionVariables.set('eventId', pm.response.json().data.id);"] } }] },
+    { "name": "Update", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"title\":\"Updated Event\",\"description\":\"Updated description\",\"date\":\"1 Jan 2027\",\"time\":\"11:00\",\"location\":\"Pune\",\"category\":\"Hands-on\"}" }, "url": "{{baseUrl}}/api/events/{{eventId}}" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('Status is 200', () => pm.response.to.have.status(200));"] } }] },
+    { "name": "Delete", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/events/{{eventId}}" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('Status is 204', () => pm.response.to.have.status(204));"] } }] },
+    { "name": "Invalid POST", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"title\":\"Missing fields\"}" }, "url": "{{baseUrl}}/api/events" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('Status is 400', () => pm.response.to.have.status(400));"] } }] },
+    { "name": "Unknown ID", "request": { "method": "GET", "url": "{{baseUrl}}/api/events/unknown-id" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('Status is 404', () => pm.response.to.have.status(404));"] } }] }
+  ]
+}

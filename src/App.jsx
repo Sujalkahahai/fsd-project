@@ -9,7 +9,9 @@ function EventCard({ event }) {
 }
 function RegistrationSummary() { const { events, registeredEventIds, unregisterFromEvent, registrationCount } = useEvents(); const registered = events.filter((event) => registeredEventIds.includes(event.id)); return <aside className="mb-8 rounded-2xl border border-teal-100 bg-teal-50 p-4 md:p-6"><p className="font-bold">My registrations <span className="font-normal">({registrationCount})</span></p>{registered.length === 0 ? <p className="mt-2 text-sm text-slate-600">No registrations yet.</p> : <ul className="mt-3 space-y-2">{registered.map((event) => <li key={event.id} className="flex justify-between rounded-lg bg-white px-3 py-2 text-sm"><span>{event.title}</span><button onClick={() => unregisterFromEvent(event.id)} className="text-teal-700 underline">Remove</button></li>)}</ul>}</aside>; }
 function EventsPage() {
-  const { events, registrationCount } = useEvents(); const [searchQuery, setSearchQuery] = useState(''); const [selectedCategory, setSelectedCategory] = useState('All');
+  const { events, loading, error, retry, registrationCount } = useEvents(); const [searchQuery, setSearchQuery] = useState(''); const [selectedCategory, setSelectedCategory] = useState('All');
+  if (loading) return <div className="min-h-screen bg-slate-50 p-10 text-center">Loading events…</div>;
+  if (error) return <div className="min-h-screen bg-slate-50 p-10 text-center"><p className="font-bold">Unable to load events</p><p className="mt-2 text-slate-600">{error}</p><button onClick={retry} className="mt-4 rounded-xl bg-teal-700 px-4 py-2 font-semibold text-white">Retry</button></div>;
   const categories = ['All', ...new Set(events.map((event) => event.category))]; const query = searchQuery.toLowerCase();
   const filteredEvents = events.filter((event) => [event.title, event.description, event.location].some((field) => field.toLowerCase().includes(query)) && (selectedCategory === 'All' || event.category === selectedCategory));
   const resetFilters = () => { setSearchQuery(''); setSelectedCategory('All'); };
