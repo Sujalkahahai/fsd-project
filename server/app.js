@@ -103,7 +103,7 @@ app.put('/api/events/:id', async (req, res, next) => {
         category: req.body.category.trim(),
         tone: req.body.tone || 'bg-teal-50 text-teal-700',
       },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
 
     if (!updatedEvent) {
