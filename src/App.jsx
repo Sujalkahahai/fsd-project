@@ -17,6 +17,8 @@ import {
 } from 'lucide-react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { EventProvider, useEvents } from './context/EventContext';
+import { NotificationProvider } from './context/NotificationContext';
+import NotificationBell from './components/NotificationBell';
 
 function EventCard({ event }) {
   const { registerForEvent, unregisterFromEvent, isRegistered, deleteEvent } = useEvents();
@@ -425,13 +427,15 @@ function EventsPage() {
               Pathlog <span className="font-medium text-teal-600">Labs</span>
             </a>
             <span className="rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-700">
-              Experiment 6
+              Experiment 7
             </span>
           </div>
 
           <div className="flex items-center gap-3">
             {isAuthenticated ? (
               <div className="flex items-center gap-3">
+                <NotificationBell />
+
                 <div className="flex items-center gap-2 rounded-xl bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-800">
                   <UserIcon size={14} className="text-slate-500" />
                   <span>{user.name}</span>
@@ -565,9 +569,11 @@ function EventsPage() {
 export default function App() {
   return (
     <AuthProvider>
-      <EventProvider>
-        <EventsPage />
-      </EventProvider>
+      <NotificationProvider>
+        <EventProvider>
+          <EventsPage />
+        </EventProvider>
+      </NotificationProvider>
     </AuthProvider>
   );
 }

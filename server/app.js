@@ -5,6 +5,7 @@ import Event from './models/Event.js';
 import authRoutes from './routes/auth.js';
 import { protect } from './middleware/auth.js';
 import { adminOnly } from './middleware/authorize.js';
+import { notifyPathlogUser } from './utils/notifications.js';
 
 const requiredFields = ['title', 'description', 'date', 'time', 'location', 'category'];
 
@@ -79,6 +80,13 @@ app.post('/api/events', protect, adminOnly, async (req, res, next) => {
       tone: req.body.tone || 'bg-teal-50 text-teal-700',
     });
 
+    notifyPathlogUser(req, {
+      type: 'event.created',
+      title: 'Event Created',
+      message: `"${newEvent.title}" has been successfully created.`,
+      eventId: newEvent.id,
+    });
+
     return res.status(201).json({ success: true, data: newEvent });
   } catch (err) {
     return next(err);
@@ -116,6 +124,13 @@ app.put('/api/events/:id', protect, adminOnly, async (req, res, next) => {
       return res.status(404).json({ success: false, message: 'Event not found' });
     }
 
+    notifyPathlogUser(req, {
+      type: 'event.updated',
+      title: 'Event Updated',
+      message: `"${updatedEvent.title}" has been updated.`,
+      eventId: updatedEvent.id,
+    });
+
     return res.json({ success: true, data: updatedEvent });
   } catch (err) {
     return next(err);
@@ -134,6 +149,13 @@ app.delete('/api/events/:id', protect, adminOnly, async (req, res, next) => {
     if (!deletedEvent) {
       return res.status(404).json({ success: false, message: 'Event not found' });
     }
+
+    notifyPathlogUser(req, {
+      type: 'event.deleted',
+      title: 'Event Deleted',
+      message: `"${deletedEvent.title}" has been deleted.`,
+      eventId: deletedEvent.id,
+    });
 
     return res.status(204).send();
   } catch (err) {
