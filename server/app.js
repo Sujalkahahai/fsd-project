@@ -2,6 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import Event from './models/Event.js';
+import authRoutes from './routes/auth.js';
+import { protect } from './middleware/auth.js';
+import { adminOnly } from './middleware/authorize.js';
 
 const requiredFields = ['title', 'description', 'date', 'time', 'location', 'category'];
 
@@ -22,13 +25,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Auth routes
+app.use('/api/auth', authRoutes);
+
 // Health Check
 app.get('/api/health', (_req, res) => {
   const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
   res.json({ success: true, data: { status: 'ok', database: dbStatus } });
 });
 
-// 1. GET /api/events - Retrieve all events
+// 1. GET /api/events - Retrieve all events (Public or Authenticated)
 app.get('/api/events', async (_req, res, next) => {
   try {
     const events = await Event.find().sort({ createdAt: -1 });
@@ -38,7 +44,7 @@ app.get('/api/events', async (_req, res, next) => {
   }
 });
 
-// 2. GET /api/events/:id - Retrieve an event by ID
+// 2. GET /api/events/:id - Retrieve an event by ID (Public or Authenticated)
 app.get('/api/events/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -55,8 +61,8 @@ app.get('/api/events/:id', async (req, res, next) => {
   }
 });
 
-// 3. POST /api/events - Create an event
-app.post('/api/events', async (req, res, next) => {
+// 3. POST /api/events - Create an event (Admin only: protected via protect + adminOnly)
+app.post('/api/events', protect, adminOnly, async (req, res, next) => {
   try {
     const error = validateBody(req.body);
     if (error) {
@@ -79,8 +85,8 @@ app.post('/api/events', async (req, res, next) => {
   }
 });
 
-// 4. PUT /api/events/:id - Update an event
-app.put('/api/events/:id', async (req, res, next) => {
+// 4. PUT /api/events/:id - Update an event (Admin only: protected via protect + adminOnly)
+app.put('/api/events/:id', protect, adminOnly, async (req, res, next) => {
   try {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -116,8 +122,8 @@ app.put('/api/events/:id', async (req, res, next) => {
   }
 });
 
-// 5. DELETE /api/events/:id - Delete an event
-app.delete('/api/events/:id', async (req, res, next) => {
+// 5. DELETE /api/events/:id - Delete an event (Admin only: protected via protect + adminOnly)
+app.delete('/api/events/:id', protect, adminOnly, async (req, res, next) => {
   try {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {

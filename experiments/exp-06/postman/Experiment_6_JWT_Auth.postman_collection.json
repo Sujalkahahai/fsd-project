@@ -1,0 +1,237 @@
+{
+  "info": {
+    "name": "Experiment 6 - JWT Auth & Role-Based Authorization",
+    "_postman_id": "a93e8271-4821-4d32-9ab1-678cba912534",
+    "description": "Postman test suite for Experiment 6: User registration, login, JWT verification, and RBAC on event management endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" },
+    { "key": "userToken", "value": "" },
+    { "key": "adminToken", "value": "" },
+    { "key": "createdEventId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "1. POST Register New User (201 Created)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Student Researcher\",\n  \"email\": \"student@pathlog.internal\",\n  \"password\": \"StudentPass2026!\"\n}"
+        },
+        "url": "{{baseUrl}}/api/auth/register"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 201 Created or 409 Conflict if already seeded', () => {",
+              "  pm.expect([201, 409]).to.include(pm.response.code);",
+              "});",
+              "if (pm.response.code === 201) {",
+              "  const json = pm.response.json();",
+              "  pm.collectionVariables.set('userToken', json.token);",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. POST Login User (200 OK & JWT)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"student@pathlog.internal\",\n  \"password\": \"StudentPass2026!\"\n}"
+        },
+        "url": "{{baseUrl}}/api/auth/login"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200 OK', () => pm.response.to.have.status(200));",
+              "const json = pm.response.json();",
+              "pm.test('Returns JWT token', () => pm.expect(json.token).to.be.a('string'));",
+              "pm.test('Role is user', () => pm.expect(json.user.role).to.eql('user'));",
+              "pm.collectionVariables.set('userToken', json.token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. POST Login Admin (200 OK & Admin JWT)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@pathlog.internal\",\n  \"password\": \"AdminPathlog2026!\"\n}"
+        },
+        "url": "{{baseUrl}}/api/auth/login"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200 OK', () => pm.response.to.have.status(200));",
+              "const json = pm.response.json();",
+              "pm.test('Role is admin', () => pm.expect(json.user.role).to.eql('admin'));",
+              "pm.collectionVariables.set('adminToken', json.token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. GET Current User /me with Bearer Token (200 OK)",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{userToken}}" }
+        ],
+        "url": "{{baseUrl}}/api/auth/me"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200 OK', () => pm.response.to.have.status(200));",
+              "const json = pm.response.json();",
+              "pm.test('User ID returned without password', () => {",
+              "  pm.expect(json.user.id).to.be.a('string');",
+              "  pm.expect(json.user.password).to.be.undefined;",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Error: Login with Invalid Credentials (401 Unauthorized)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"student@pathlog.internal\",\n  \"password\": \"IncorrectPassword999!\"\n}"
+        },
+        "url": "{{baseUrl}}/api/auth/login"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 401 Unauthorized', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Error: Access Protected Endpoint Without Token (401 Unauthorized)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Unauthenticated Event\",\n  \"description\": \"Should be rejected\",\n  \"date\": \"10 Aug 2026\",\n  \"time\": \"10:00 AM\",\n  \"location\": \"Pune\",\n  \"category\": \"Hands-on\"\n}"
+        },
+        "url": "{{baseUrl}}/api/events"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 401 Unauthorized', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Error: User Token accessing Admin POST (403 Forbidden)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{userToken}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Non-Admin Event Creation\",\n  \"description\": \"Must be rejected with 403 Forbidden\",\n  \"date\": \"10 Aug 2026\",\n  \"time\": \"10:00 AM\",\n  \"location\": \"Pune\",\n  \"category\": \"Hands-on\"\n}"
+        },
+        "url": "{{baseUrl}}/api/events"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 403 Forbidden', () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Admin Token accessing Admin POST (201 Created)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Cybersecurity & Identity Summit\",\n  \"description\": \"Admin authorized event showcasing JWT and RBAC defense patterns.\",\n  \"date\": \"28 August 2026\",\n  \"time\": \"09:30 AM – 04:30 PM\",\n  \"location\": \"Bengaluru\",\n  \"category\": \"Conference\",\n  \"tone\": \"bg-teal-50 text-teal-700\"\n}"
+        },
+        "url": "{{baseUrl}}/api/events"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 201 Created', () => pm.response.to.have.status(201));",
+              "const json = pm.response.json();",
+              "pm.collectionVariables.set('createdEventId', json.data.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. Admin Token DELETE Event (204 No Content)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+        ],
+        "url": "{{baseUrl}}/api/events/{{createdEventId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 204 No Content', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
+
