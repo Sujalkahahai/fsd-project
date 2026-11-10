@@ -1,10 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { app, server as httpServer, io } from './server.js';
+import { server as httpServer, io } from './server.js';
 import { once } from 'node:events';
 import mongoose from 'mongoose';
-import Event from './models/Event.js';
-import User from './models/User.js';
 import connectDB from './config/db.js';
 import { autoSeedEvents, bootstrapAdminUser } from './seed.js';
 import { io as ClientIO } from 'socket.io-client';

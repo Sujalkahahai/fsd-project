@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Bell, Check, Trash2, Info } from 'lucide-react';
+import { Bell, Trash2, Info } from 'lucide-react';
 import { useNotifications } from '../context/NotificationContext';
 
 export default function NotificationBell() {

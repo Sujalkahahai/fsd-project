@@ -46,7 +46,7 @@ io.use(async (socket, next) => {
     socket.data.userId = user._id.toString();
     socket.data.user = user;
     next();
-  } catch (err) {
+  } catch (_err) {
     next(new Error('Invalid or expired token'));
   }
 });

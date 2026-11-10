@@ -87,7 +87,9 @@ export function EventProvider({ children }) {
       try {
         const payload = await response.json();
         msg = payload.message || msg;
-      } catch {}
+      } catch (_ignored) {
+        // use default fallback message
+      }
       throw new Error(msg);
     }
 
