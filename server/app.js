@@ -1,5 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
+import fs from 'fs';
 import mongoose from 'mongoose';
 import Event from './models/Event.js';
 import authRoutes from './routes/auth.js';
@@ -170,5 +172,17 @@ app.use((error, _req, res, _next) => {
   }
   return res.status(500).json({ success: false, message: error.message || 'Unexpected server error' });
 });
+
+// Production static file serving
+const distPath = path.resolve('dist');
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+  app.use((req, res, next) => {
+    if (req.method === 'GET' && !req.path.startsWith('/api')) {
+      return res.sendFile(path.join(distPath, 'index.html'));
+    }
+    next();
+  });
+}
 
 export default app;

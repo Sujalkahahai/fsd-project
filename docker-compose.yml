@@ -1,0 +1,22 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pathlog-app
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - NODE_ENV=production
+      - MONGODB_URI=${MONGODB_URI}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=1d
+      - ADMIN_NAME=${ADMIN_NAME:-Pathlog Admin}
+      - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@pathlog.internal}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-AdminPathlog2026!}
+      - CLIENT_ORIGIN=http://localhost:5000
+    env_file:
+      - server/.env
+
