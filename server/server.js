@@ -3,7 +3,7 @@ import { Server } from 'socket.io';
 import jwt from 'jsonwebtoken';
 import app from './app.js';
 import connectDB from './config/db.js';
-import { autoSeedEvents, bootstrapAdminUser } from './seed.js';
+import { autoSeedTemplates, bootstrapAdminUser } from './seed.js';
 import User from './models/User.js';
 
 const port = process.env.PORT || 5000;
@@ -14,7 +14,7 @@ const server = http.createServer(app);
 // Initialize Socket.IO with CORS
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
+    origin: process.env.CLIENT_ORIGIN || '*',
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -37,13 +37,18 @@ io.use(async (socket, next) => {
     }
 
     const payload = jwt.verify(token, secret);
-    const user = await User.findById(payload.sub).select('_id name email role');
+    const user = await User.findById(payload.sub).select('_id name email role isSuspended');
     if (!user) {
       return next(new Error('User not found'));
     }
 
+    if (user.isSuspended) {
+      return next(new Error('Account is suspended'));
+    }
+
     // Attach user info to socket
     socket.data.userId = user._id.toString();
+    socket.data.userName = user.name;
     socket.data.user = user;
     next();
   } catch (_err) {
@@ -54,20 +59,63 @@ io.use(async (socket, next) => {
 // Connection and disconnection handlers
 io.on('connection', (socket) => {
   const userId = socket.data.userId;
-  // Join the user-specific private room
+  const userName = socket.data.userName;
+
+  // Join the user-specific private room for personal notifications
   socket.join(userId);
-  console.log(`[Socket.IO] Pathlog client connected: ${socket.id} (User ID: ${userId})`);
+  console.log(`[Socket.IO] Pathlog user connected: ${userName} (${userId})`);
+
+  // Handle study room events
+  socket.on('study:join_room', (roomId) => {
+    if (!roomId) return;
+    socket.join(`room:${roomId}`);
+    io.to(`room:${roomId}`).emit('study:peer_joined', {
+      userId,
+      userName,
+      timestamp: new Date().toISOString(),
+    });
+  });
+
+  socket.on('study:leave_room', (roomId) => {
+    if (!roomId) return;
+    socket.leave(`room:${roomId}`);
+    io.to(`room:${roomId}`).emit('study:peer_left', {
+      userId,
+      userName,
+      timestamp: new Date().toISOString(),
+    });
+  });
+
+  socket.on('study:timer_action', ({ roomId, action, duration }) => {
+    if (!roomId) return;
+    io.to(`room:${roomId}`).emit('study:timer_update', {
+      action, // 'start', 'pause', 'reset'
+      duration,
+      senderName: userName,
+      timestamp: new Date().toISOString(),
+    });
+  });
+
+  socket.on('study:log_activity', ({ roomId, topicTitle, correct }) => {
+    if (!roomId) return;
+    io.to(`room:${roomId}`).emit('study:activity_feed', {
+      userName,
+      topicTitle,
+      correct,
+      timestamp: new Date().toISOString(),
+    });
+  });
 
   socket.on('disconnect', (reason) => {
-    console.log(`[Socket.IO] Pathlog client disconnected: ${socket.id} (Reason: ${reason})`);
+    console.log(`[Socket.IO] User disconnected: ${userId} (${reason})`);
   });
 });
 
 async function startServer() {
   try {
     await connectDB();
-    await autoSeedEvents();
     await bootstrapAdminUser();
+    await autoSeedTemplates();
     server.listen(port, () => {
       console.log(`Pathlog API with Socket.IO listening on http://localhost:${port}`);
     });

@@ -43,11 +43,11 @@ export default function NotificationBell() {
         onClick={handleToggle}
         aria-label="View notifications"
         aria-expanded={isOpen}
-        className="relative flex items-center justify-center rounded-xl border border-slate-200 bg-white p-2 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition focus:outline-none focus:ring-2 focus:ring-teal-500"
+        className="relative flex items-center justify-center rounded-xl border border-slate-200 bg-white p-2.5 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
       >
         <Bell size={18} />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-teal-600 px-1 text-[10px] font-bold text-white shadow-sm animate-pulse">
+          <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-indigo-600 px-1 text-[10px] font-bold text-white shadow-sm animate-pulse">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
@@ -56,11 +56,11 @@ export default function NotificationBell() {
       {isOpen && (
         <div className="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl border border-slate-200 bg-white shadow-xl z-50 overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/70 px-4 py-3">
+          <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50 px-4 py-3">
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-700">Notifications</span>
               {notifications.length > 0 && (
-                <span className="rounded-full bg-slate-200 px-2 py-0.5 text-[10px] font-semibold text-slate-700">
+                <span className="rounded-full bg-indigo-50 text-indigo-700 px-2 py-0.5 text-[10px] font-semibold">
                   {notifications.length}
                 </span>
               )}
@@ -109,4 +109,3 @@ export default function NotificationBell() {
     </div>
   );
 }
-
