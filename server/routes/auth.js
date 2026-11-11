@@ -31,6 +31,7 @@ router.post('/register', async (req, res, next) => {
       email: normalizedEmail,
       password,
       role: 'user',
+      isSuspended: false,
     });
 
     const token = createToken(user);
@@ -66,6 +67,10 @@ router.post('/login', async (req, res, next) => {
       return res.status(401).json({ success: false, message: 'Invalid email or password' });
     }
 
+    if (user.isSuspended) {
+      return res.status(403).json({ success: false, message: 'Account is suspended by an administrator' });
+    }
+
     const token = createToken(user);
 
     return res.status(200).json({
@@ -92,9 +97,9 @@ router.get('/me', protect, async (req, res) => {
       name: req.user.name,
       email: req.user.email,
       role: req.user.role,
+      isSuspended: req.user.isSuspended,
     },
   });
 });
 
 export default router;
-

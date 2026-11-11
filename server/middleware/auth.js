@@ -28,9 +28,13 @@ export async function protect(req, res, next) {
     }
 
     const payload = jwt.verify(token, secret);
-    const user = await User.findById(payload.sub).select('_id name email role');
+    const user = await User.findById(payload.sub).select('_id name email role isSuspended');
     if (!user) {
       return res.status(401).json({ success: false, message: 'User no longer exists' });
+    }
+
+    if (user.isSuspended) {
+      return res.status(403).json({ success: false, message: 'Account is suspended by an administrator' });
     }
 
     req.user = user;
@@ -39,4 +43,3 @@ export async function protect(req, res, next) {
     return res.status(401).json({ success: false, message: 'Invalid or expired token' });
   }
 }
-
