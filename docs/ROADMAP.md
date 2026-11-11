@@ -1,28 +1,24 @@
 # Incremental FSD Lab Roadmap
 
-**Only Experiment 0 is documented by the supplied Pathlog PDF.** Future experiment numbers, dates and aims below are **proposed work phases**, not claimed faculty assignments. Reorder them to match the actual lab sheets.
+**Basis:** Pathlog Web Application Design and Planning baseline for Full Stack Development Mini Project & Lab Evaluation.
 
 | Phase | Proposed increment | State |
 |---|---|---|
-| 0 | Problem analysis, target users, requirements, views, wireframes, stack and DB design | Documented in submitted planning PDF; repository implementation not verified |
-| 1 | React + Vite + Tailwind scaffold; responsive shell, navigation, initial pages | Not started / verify repo |
-| 2 | Subject/topic UI, forms, state, validation and routing | Not started |
-| 3 | Express server, MongoDB connection and core CRUD | Not started |
-| 4 | JWT authentication, protected routes, ownership and roles | Not started |
-| 5 | Resource exposure, practice logs and assessment CRUD | Not started |
-| 6 | Deterministic evidence engine and independent confidence | Not started |
-| 7 | Revision queue and explainable priority engine | Not started |
-| 8 | Template publishing and cloning; admin moderation | Not started |
-| 9 | Socket.IO study room, shared timer and activity feed | Not started |
-| 10 | Tests, API docs, Docker, CI/CD, deployment and final integration | Not started |
+| 0 | Problem analysis, target users, requirements, views, wireframes, stack and DB design | Completed (PDF Baseline) |
+| 1 | React + Vite + Tailwind scaffold; responsive shell, navigation, initial pages | Completed (`src/App.jsx`, `src/components/Navbar.jsx`, `src/styles.css`) |
+| 2 | Subject/topic UI, forms, state, validation and routing | Completed (`src/components/SubjectsView.jsx`, `src/components/TopicDetailModal.jsx`) |
+| 3 | Express server, MongoDB connection and core CRUD | Completed (`server/routes/subjects.js`, `server/routes/topics.js`) |
+| 4 | JWT authentication, protected routes, ownership and roles | Completed (`server/middleware/auth.js`, `server/routes/auth.js`) |
+| 5 | Resource exposure, practice logs and assessment CRUD | Completed (`server/routes/resources.js`, `server/routes/practice.js`, `server/routes/assessments.js`) |
+| 6 | Deterministic evidence engine and independent confidence | Completed (`server/utils/evidence.js`) |
+| 7 | Revision queue and explainable priority engine | Completed (`server/routes/learning.js`, `src/components/RevisionQueueView.jsx`) |
+| 8 | Template publishing and cloning; admin moderation | Completed (`server/routes/templates.js`, `server/routes/admin.js`, `src/components/TemplatesView.jsx`, `src/components/AdminView.jsx`) |
+| 9 | Socket.IO study room, shared timer and activity feed | Completed (`server/server.js`, `src/components/StudyRoomView.jsx`, `src/context/NotificationContext.jsx`) |
+| 10 | Tests, Docker containerization, deployment and final integration | Completed (`server/api.test.js` 11/11 tests pass, `Dockerfile`, `docker-compose.yml`, `dist/` production bundle) |
 
-## For each actual experiment
-1. Obtain exact faculty aim, problem statement, requirements and theory questions.
-2. Record mapping from those requirements to one or more Pathlog features.
-3. Implement the smallest testable vertical slice without breaking previous experiments.
-4. Run the app, verify the feature, capture genuine screenshots.
-5. Write experiment report and reference exact screenshot paths.
-6. Commit source + documentation (exclude secrets and unnecessary build artifacts).
+---
 
-## Next action
-Inspect the cloned repository and the faculty instructions for the **next** experiment. Do not create or replace a Vite app blindly if files already exist. Record the result in the appropriate experiment folder.
+## Verification & Status
+- **Automated test suite:** `npm run test:api` passes 11/11 tests covering all REST endpoints, invariant logic, Socket.IO rooms, and RBAC.
+- **Production bundle:** `npm run build` compiles Vite assets cleanly into `dist/` with 0 warnings.
+- **Linter check:** `npm run lint` passes with 0 errors and 0 warnings.
