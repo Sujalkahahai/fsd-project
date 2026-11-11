@@ -89,12 +89,19 @@ function MainContent() {
                 </button>
               </div>
 
-              {/* Demo Admin Tip */}
-              <div className="mt-4 rounded-xl border border-slate-200 bg-white p-3.5 text-xs text-slate-600 max-w-md mx-auto shadow-2xs">
-                <p className="font-bold text-slate-900">Demo Credentials:</p>
-                <p className="mt-0.5 text-slate-500 font-mono text-[11px]">
-                  Email: <span className="text-indigo-600">admin@pathlog.internal</span> | Password: <span className="text-indigo-600">AdminPathlog2026!</span>
-                </p>
+              {/* Demo Credentials Box */}
+              <div className="mt-4 rounded-xl border border-slate-200 bg-white p-3.5 text-xs text-slate-600 max-w-md mx-auto shadow-2xs text-left">
+                <p className="font-bold text-slate-900 text-center mb-1">Evaluation Demo Accounts:</p>
+                <div className="space-y-1 font-mono text-[11px] text-slate-600">
+                  <div className="flex justify-between border-b border-slate-100 pb-1">
+                    <span className="font-sans font-semibold text-slate-800">Demo Student:</span>
+                    <span>student@pathlog.internal / StudentPathlog2026!</span>
+                  </div>
+                  <div className="flex justify-between pt-0.5">
+                    <span className="font-sans font-semibold text-slate-800">Administrator:</span>
+                    <span>admin@pathlog.internal / AdminPathlog2026!</span>
+                  </div>
+                </div>
               </div>
             </div>
 
