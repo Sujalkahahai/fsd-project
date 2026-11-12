@@ -48,7 +48,7 @@ export default function RevisionQueueView({ onSelectTopic }) {
         <button
           type="button"
           onClick={fetchQueue}
-          className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-2xs self-start"
+          className="w-full sm:w-auto flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-2xs"
         >
           <RefreshCw size={14} /> Refresh
         </button>
@@ -136,7 +136,7 @@ export default function RevisionQueueView({ onSelectTopic }) {
               <button
                 type="button"
                 onClick={() => onSelectTopic(item.topicId)}
-                className="flex items-center justify-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition shrink-0"
+                className="w-full sm:w-auto flex items-center justify-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition shrink-0"
               >
                 <Brain size={15} /> Practice Now <ArrowRight size={14} />
               </button>

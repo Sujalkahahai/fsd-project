@@ -30,14 +30,14 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuth }) {
 
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-3 sm:px-6 py-2.5 sm:py-3">
         {/* Brand */}
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-sm shadow-indigo-200">
-            <Compass size={22} className="stroke-[2.5]" />
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-sm shadow-indigo-200 shrink-0">
+            <Compass size={20} className="stroke-[2.5]" />
           </div>
           <div>
-            <span className="text-lg font-bold tracking-tight text-slate-900">Pathlog</span>
+            <span className="text-base sm:text-lg font-bold tracking-tight text-slate-900 block leading-tight">Pathlog</span>
             <span className="hidden text-xs text-slate-500 sm:block">Evidence-Based Learning</span>
           </div>
         </div>
@@ -68,7 +68,7 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuth }) {
         )}
 
         {/* User actions */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3">
           {isAuthenticated ? (
             <>
               <NotificationBell />
@@ -84,28 +84,28 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuth }) {
                 type="button"
                 onClick={logout}
                 title="Log out"
-                className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 hover:text-red-600 transition shadow-sm"
+                className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 hover:text-red-600 transition shadow-2xs"
               >
                 <LogOut size={15} />
                 <span className="hidden sm:inline">Logout</span>
               </button>
             </>
           ) : (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <button
                 type="button"
                 onClick={() => onOpenAuth('login')}
-                className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-sm"
+                className="flex items-center gap-1 sm:gap-1.5 rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 sm:px-3.5 sm:py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-2xs"
               >
-                <LogIn size={15} />
+                <LogIn size={14} className="sm:w-[15px]" />
                 Sign In
               </button>
               <button
                 type="button"
                 onClick={() => onOpenAuth('register')}
-                className="flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white hover:bg-indigo-700 transition shadow-sm shadow-indigo-200"
+                className="flex items-center gap-1 sm:gap-1.5 rounded-xl bg-indigo-600 px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-semibold text-white hover:bg-indigo-700 transition shadow-sm shadow-indigo-200"
               >
-                <UserPlus size={15} />
+                <UserPlus size={14} className="sm:w-[15px]" />
                 Register
               </button>
             </div>
@@ -115,7 +115,7 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuth }) {
 
       {/* Mobile nav bar for small screens */}
       {isAuthenticated && (
-        <div className="flex md:hidden overflow-x-auto border-t border-slate-100 bg-slate-50 px-2 py-1.5">
+        <div className="flex md:hidden overflow-x-auto no-scrollbar border-t border-slate-100 bg-slate-50 px-2.5 py-2 gap-1.5 shadow-inner">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -124,10 +124,10 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuth }) {
                 key={item.id}
                 type="button"
                 onClick={() => setActiveTab(item.id)}
-                className={`flex shrink-0 items-center gap-1.5 rounded-lg px-2.5 py-1 text-[11px] font-medium transition ${
+                className={`flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition ${
                   isActive
-                    ? 'bg-indigo-600 text-white font-semibold shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-indigo-600 text-white font-semibold shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 bg-white/70 border border-slate-200/60'
                 }`}
               >
                 <Icon size={14} />

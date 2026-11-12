@@ -124,7 +124,7 @@ export default function TemplatesView({ onNavigate }) {
           <button
             type="button"
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition shrink-0 self-start"
+            className="w-full sm:w-auto flex items-center justify-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition shrink-0"
           >
             <Plus size={16} /> Create Template
           </button>
@@ -132,15 +132,15 @@ export default function TemplatesView({ onNavigate }) {
       </div>
 
       {successMessage && (
-        <div className="flex items-center justify-between rounded-xl bg-emerald-50 p-4 border border-emerald-200 text-emerald-800 text-xs font-semibold animate-in fade-in">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-xl bg-emerald-50 p-4 border border-emerald-200 text-emerald-800 text-xs font-semibold animate-in fade-in">
           <div className="flex items-center gap-2">
-            <CheckCircle size={16} className="text-emerald-600" />
+            <CheckCircle size={16} className="text-emerald-600 shrink-0" />
             <span>{successMessage}</span>
           </div>
           <button
             type="button"
             onClick={() => onNavigate('subjects')}
-            className="underline underline-offset-2 hover:text-emerald-950 font-bold"
+            className="underline underline-offset-2 hover:text-emerald-950 font-bold self-start sm:self-auto"
           >
             View in Subjects →
           </button>
@@ -224,8 +224,8 @@ export default function TemplatesView({ onNavigate }) {
 
       {/* CREATE TEMPLATE MODAL (ADMIN ONLY) */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-3 sm:p-4 backdrop-blur-xs overflow-y-auto">
+          <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-2xl max-h-[92vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <h3 className="text-base font-bold text-slate-900">Create Curated Template</h3>
               <button

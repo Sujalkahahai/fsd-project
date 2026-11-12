@@ -195,7 +195,7 @@ export default function SubjectsView({ onSelectTopic }) {
             setSubjTargetDate('');
             setIsSubjectModalOpen(true);
           }}
-          className="flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition shrink-0"
+          className="w-full sm:w-auto flex items-center justify-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition shrink-0"
         >
           <Plus size={16} /> Add Subject
         </button>
@@ -249,7 +249,7 @@ export default function SubjectsView({ onSelectTopic }) {
                 className="rounded-2xl border border-slate-200 bg-white shadow-2xs overflow-hidden transition"
               >
                 {/* Subject Summary Bar */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between p-5 gap-3 border-b border-slate-100">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 gap-3 border-b border-slate-100">
                   <div
                     className="flex-1 cursor-pointer"
                     onClick={() => toggleSubject(sid)}
@@ -271,9 +271,9 @@ export default function SubjectsView({ onSelectTopic }) {
                     )}
                   </div>
 
-                  <div className="flex items-center gap-4 pl-6 sm:pl-0">
+                  <div className="flex flex-wrap items-center justify-between sm:justify-end gap-3 sm:gap-4 pl-6 sm:pl-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
                     {/* Exposure Fraction */}
-                    <div className="text-right">
+                    <div className="text-left sm:text-right">
                       <span className="block text-[10px] font-semibold uppercase tracking-wider text-slate-400">
                         Exposure
                       </span>
@@ -283,7 +283,7 @@ export default function SubjectsView({ onSelectTopic }) {
                     </div>
 
                     {/* Topics Count */}
-                    <div className="text-right">
+                    <div className="text-left sm:text-right">
                       <span className="block text-[10px] font-semibold uppercase tracking-wider text-slate-400">
                         Topics
                       </span>
@@ -294,7 +294,7 @@ export default function SubjectsView({ onSelectTopic }) {
 
                     {/* Target Date */}
                     {subject.targetDate && (
-                      <div className="text-right hidden md:block">
+                      <div className="text-left sm:text-right hidden sm:block">
                         <span className="block text-[10px] font-semibold uppercase tracking-wider text-slate-400">
                           Target
                         </span>
@@ -307,7 +307,7 @@ export default function SubjectsView({ onSelectTopic }) {
                     )}
 
                     {/* Actions */}
-                    <div className="flex items-center gap-1 border-l border-slate-100 pl-3">
+                    <div className="flex items-center gap-1 border-l border-slate-100 pl-2 sm:pl-3 ml-auto sm:ml-0">
                       <button
                         type="button"
                         onClick={() => {
@@ -415,11 +415,11 @@ export default function SubjectsView({ onSelectTopic }) {
                               </div>
                             </div>
 
-                            <div className="flex items-center gap-2 self-end sm:self-center">
+                            <div className="flex items-center gap-2 w-full sm:w-auto justify-end border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-100">
                               <button
                                 type="button"
                                 onClick={() => onSelectTopic(tid)}
-                                className="flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700 transition shadow-xs"
+                                className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700 transition shadow-xs"
                               >
                                 View Topic Details
                               </button>
@@ -446,8 +446,8 @@ export default function SubjectsView({ onSelectTopic }) {
 
       {/* CREATE / EDIT SUBJECT MODAL */}
       {isSubjectModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-3 sm:p-4 backdrop-blur-xs overflow-y-auto">
+          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-2xl max-h-[92vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <h3 className="text-base font-bold text-slate-900">
                 {editingSubject ? 'Edit Subject' : 'Add New Subject'}
@@ -523,8 +523,8 @@ export default function SubjectsView({ onSelectTopic }) {
 
       {/* CREATE TOPIC MODAL */}
       {isTopicModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-3 sm:p-4 backdrop-blur-xs overflow-y-auto">
+          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-2xl max-h-[92vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <h3 className="text-base font-bold text-slate-900">Add Topic</h3>
               <button

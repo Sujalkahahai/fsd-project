@@ -196,8 +196,8 @@ export default function TopicDetailModal({ topicId, onClose, onRefresh }) {
   if (!topicId) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-3 sm:p-4 backdrop-blur-xs overflow-y-auto">
-      <div className="w-full max-w-3xl rounded-2xl border border-slate-200 bg-white shadow-2xl my-8 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-2.5 sm:p-4 backdrop-blur-xs overflow-y-auto">
+      <div className="w-full max-w-3xl rounded-2xl border border-slate-200 bg-white shadow-2xl my-2 sm:my-8 overflow-hidden max-h-[94vh] flex flex-col">
         {loading && !topicData ? (
           <div className="flex h-64 items-center justify-center">
             <RefreshCw className="animate-spin text-indigo-600" size={24} />
@@ -329,11 +329,11 @@ export default function TopicDetailModal({ topicId, onClose, onRefresh }) {
               )}
 
               {/* Sub-tab Navigation */}
-              <div className="mt-4 flex items-center gap-2 border-t border-slate-200 pt-3">
+              <div className="mt-4 flex items-center gap-2 border-t border-slate-200 pt-3 overflow-x-auto no-scrollbar pb-1">
                 <button
                   type="button"
                   onClick={() => setActiveTab('resources')}
-                  className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+                  className={`shrink-0 whitespace-nowrap flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
                     activeTab === 'resources'
                       ? 'bg-indigo-600 text-white shadow-xs'
                       : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
@@ -345,7 +345,7 @@ export default function TopicDetailModal({ topicId, onClose, onRefresh }) {
                 <button
                   type="button"
                   onClick={() => setActiveTab('practice')}
-                  className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+                  className={`shrink-0 whitespace-nowrap flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
                     activeTab === 'practice'
                       ? 'bg-indigo-600 text-white shadow-xs'
                       : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
@@ -357,7 +357,7 @@ export default function TopicDetailModal({ topicId, onClose, onRefresh }) {
                 <button
                   type="button"
                   onClick={() => setActiveTab('assessments')}
-                  className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+                  className={`shrink-0 whitespace-nowrap flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
                     activeTab === 'assessments'
                       ? 'bg-indigo-600 text-white shadow-xs'
                       : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
@@ -370,7 +370,7 @@ export default function TopicDetailModal({ topicId, onClose, onRefresh }) {
             </div>
 
             {/* Modal Body */}
-            <div className="p-5 max-h-[60vh] overflow-y-auto">
+            <div className="p-4 sm:p-5 flex-1 overflow-y-auto">
               {/* TAB 1: RESOURCES */}
               {activeTab === 'resources' && (
                 <div className="space-y-4">

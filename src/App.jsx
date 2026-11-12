@@ -36,7 +36,7 @@ function MainContent() {
       />
 
       {/* Main Body */}
-      <main className="flex-1 mx-auto w-full max-w-7xl px-4 py-6 sm:px-6">
+      <main className="flex-1 mx-auto w-full max-w-7xl px-3 sm:px-6 py-4 sm:py-6">
         {isAuthenticated ? (
           <div>
             {activeTab === 'dashboard' && (
@@ -57,57 +57,42 @@ function MainContent() {
           </div>
         ) : (
           /* Landing Hero for Unauthenticated Visitors */
-          <div className="space-y-12 py-8 sm:py-16">
-            <div className="text-center max-w-3xl mx-auto space-y-5">
+          <div className="space-y-10 sm:space-y-14 py-6 sm:py-14">
+            <div className="text-center max-w-3xl mx-auto space-y-4 sm:space-y-5 px-2">
               <div className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50/70 px-3.5 py-1 text-xs font-bold text-indigo-700 shadow-2xs">
                 <Compass size={14} className="animate-spin text-indigo-600" />
                 Evidence-Based Study Tracking
               </div>
 
-              <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
                 Stop Confusing Reading with Real Understanding
               </h1>
 
-              <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
+              <p className="text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
                 Checklist trackers only prove you opened a link. <strong>Pathlog</strong> tracks verified practice logs and assessment scores separately from resource exposure, providing a transparent revision queue and explainable next actions.
               </p>
 
-              <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 w-full max-w-xs sm:max-w-none mx-auto">
                 <button
                   type="button"
                   onClick={() => setAuthModalMode('register')}
-                  className="flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white hover:bg-indigo-700 shadow-md shadow-indigo-200 transition"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white hover:bg-indigo-700 shadow-md shadow-indigo-200 transition"
                 >
                   <UserPlus size={16} /> Get Started Free <ArrowRight size={16} />
                 </button>
                 <button
                   type="button"
                   onClick={() => setAuthModalMode('login')}
-                  className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition shadow-2xs"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition shadow-2xs"
                 >
                   <LogIn size={16} /> Sign In
                 </button>
               </div>
-
-              {/* Demo Credentials Box */}
-              <div className="mt-4 rounded-xl border border-slate-200 bg-white p-3.5 text-xs text-slate-600 max-w-md mx-auto shadow-2xs text-left">
-                <p className="font-bold text-slate-900 text-center mb-1">Evaluation Demo Accounts:</p>
-                <div className="space-y-1 font-mono text-[11px] text-slate-600">
-                  <div className="flex justify-between border-b border-slate-100 pb-1">
-                    <span className="font-sans font-semibold text-slate-800">Demo Student:</span>
-                    <span>student@pathlog.internal / StudentPathlog2026!</span>
-                  </div>
-                  <div className="flex justify-between pt-0.5">
-                    <span className="font-sans font-semibold text-slate-800">Administrator:</span>
-                    <span>admin@pathlog.internal / AdminPathlog2026!</span>
-                  </div>
-                </div>
-              </div>
             </div>
 
             {/* Core Values Pillars */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
-              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-2xs space-y-2">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 pt-2 sm:pt-4">
+              <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-2xs space-y-2">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
                   <Brain size={20} />
                 </div>
@@ -117,7 +102,7 @@ function MainContent() {
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-2xs space-y-2">
+              <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-2xs space-y-2">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
                   <History size={20} />
                 </div>
@@ -127,7 +112,7 @@ function MainContent() {
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-2xs space-y-2">
+              <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-2xs space-y-2">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
                   <Sparkles size={20} />
                 </div>

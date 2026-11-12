@@ -84,32 +84,32 @@ export default function AdminView() {
       ) : (
         <>
           {/* Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3.5">
-            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-2xs">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5">
+            <div className="rounded-2xl border border-slate-200 bg-white p-3.5 sm:p-4 shadow-2xs">
               <span className="text-xs text-slate-500 font-medium">Total Users</span>
-              <p className="mt-2 text-2xl font-bold text-slate-900">{stats?.usersCount || 0}</p>
+              <p className="mt-2 text-xl sm:text-2xl font-bold text-slate-900">{stats?.usersCount || 0}</p>
             </div>
-            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-2xs">
+            <div className="rounded-2xl border border-slate-200 bg-white p-3.5 sm:p-4 shadow-2xs">
               <span className="text-xs text-slate-500 font-medium">Total Subjects</span>
-              <p className="mt-2 text-2xl font-bold text-slate-900">{stats?.subjectsCount || 0}</p>
+              <p className="mt-2 text-xl sm:text-2xl font-bold text-slate-900">{stats?.subjectsCount || 0}</p>
             </div>
-            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-2xs">
+            <div className="rounded-2xl border border-slate-200 bg-white p-3.5 sm:p-4 shadow-2xs">
               <span className="text-xs text-slate-500 font-medium">Total Topics</span>
-              <p className="mt-2 text-2xl font-bold text-slate-900">{stats?.topicsCount || 0}</p>
+              <p className="mt-2 text-xl sm:text-2xl font-bold text-slate-900">{stats?.topicsCount || 0}</p>
             </div>
-            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-2xs">
+            <div className="rounded-2xl border border-slate-200 bg-white p-3.5 sm:p-4 shadow-2xs">
               <span className="text-xs text-slate-500 font-medium">Practice Logs</span>
-              <p className="mt-2 text-2xl font-bold text-slate-900">{stats?.practiceCount || 0}</p>
+              <p className="mt-2 text-xl sm:text-2xl font-bold text-slate-900">{stats?.practiceCount || 0}</p>
             </div>
-            <div className="col-span-2 md:col-span-1 rounded-2xl border border-slate-200 bg-white p-4 shadow-2xs">
+            <div className="col-span-2 sm:col-span-1 rounded-2xl border border-slate-200 bg-white p-3.5 sm:p-4 shadow-2xs">
               <span className="text-xs text-slate-500 font-medium">Assessments</span>
-              <p className="mt-2 text-2xl font-bold text-slate-900">{stats?.assessmentsCount || 0}</p>
+              <p className="mt-2 text-xl sm:text-2xl font-bold text-slate-900">{stats?.assessmentsCount || 0}</p>
             </div>
           </div>
 
           {/* User Moderation Table */}
           <div className="rounded-2xl border border-slate-200 bg-white shadow-2xs overflow-hidden">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-5 border-b border-slate-100 bg-slate-50/50">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 sm:p-5 border-b border-slate-100 bg-slate-50/50">
               <div>
                 <h2 className="text-base font-bold text-slate-900">User Accounts</h2>
                 <p className="text-xs text-slate-500">Manage account access and suspensions</p>
@@ -128,7 +128,7 @@ export default function AdminView() {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs">
+              <table className="w-full min-w-[620px] text-left border-collapse text-xs">
                 <thead>
                   <tr className="border-b border-slate-100 bg-slate-50/80 text-[11px] font-bold uppercase tracking-wider text-slate-500">
                     <th className="py-3 px-5">User</th>

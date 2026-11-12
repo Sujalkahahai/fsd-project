@@ -244,7 +244,7 @@ export default function StudyRoomView() {
             <button
               type="button"
               onClick={() => setIsModalOpen(true)}
-              className="flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition shrink-0 self-start"
+              className="w-full sm:w-auto flex items-center justify-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition shrink-0"
             >
               <Plus size={16} /> Create Study Room
             </button>
@@ -312,7 +312,7 @@ export default function StudyRoomView() {
         /* INSIDE ACTIVE STUDY ROOM */
         <div className="space-y-6">
           {/* Room Header */}
-          <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-2xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-2xs">
             <div>
               <div className="flex items-center gap-2">
                 <span className="rounded-md bg-indigo-50 px-2.5 py-0.5 text-xs font-bold text-indigo-700">
@@ -328,7 +328,7 @@ export default function StudyRoomView() {
             <button
               type="button"
               onClick={handleLeaveRoom}
-              className="flex items-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-3.5 py-2 text-xs font-semibold text-red-700 hover:bg-red-100 transition"
+              className="w-full sm:w-auto flex items-center justify-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-3.5 py-2 text-xs font-semibold text-red-700 hover:bg-red-100 transition"
             >
               <LogOut size={14} /> Leave Room
             </button>
@@ -336,13 +336,13 @@ export default function StudyRoomView() {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Shared Timer Column (2 cols) */}
-            <div className="lg:col-span-2 rounded-2xl border border-slate-200 bg-white p-8 shadow-2xs flex flex-col items-center justify-center text-center">
+            <div className="lg:col-span-2 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-2xs flex flex-col items-center justify-center text-center">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
                 Shared Pomodoro Timer
               </span>
 
               {/* Countdown Numbers */}
-              <div className="mt-4 font-mono text-6xl sm:text-7xl font-extrabold tracking-tight text-slate-900">
+              <div className="mt-4 font-mono text-5xl sm:text-7xl font-extrabold tracking-tight text-slate-900">
                 {formatTimer(timerSeconds)}
               </div>
 
@@ -414,8 +414,8 @@ export default function StudyRoomView() {
 
       {/* CREATE ROOM MODAL */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-3 sm:p-4 backdrop-blur-xs overflow-y-auto">
+          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-2xl max-h-[92vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <h3 className="text-base font-bold text-slate-900">Create Study Room</h3>
               <button
