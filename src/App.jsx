@@ -19,6 +19,7 @@ import StudyRoomView from './components/StudyRoomView';
 import TemplatesView from './components/TemplatesView';
 import AdminView from './components/AdminView';
 import TopicDetailModal from './components/TopicDetailModal';
+import ErrorBoundary from './components/ErrorBoundary';
 
 function MainContent() {
   const { isAuthenticated, isAdmin } = useAuth();
@@ -147,10 +148,12 @@ function MainContent() {
       )}
 
       {selectedTopicId && (
-        <TopicDetailModal
-          topicId={selectedTopicId}
-          onClose={() => setSelectedTopicId(null)}
-        />
+        <ErrorBoundary onReset={() => setSelectedTopicId(null)}>
+          <TopicDetailModal
+            topicId={selectedTopicId}
+            onClose={() => setSelectedTopicId(null)}
+          />
+        </ErrorBoundary>
       )}
     </div>
   );
@@ -158,10 +161,12 @@ function MainContent() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <NotificationProvider>
-        <MainContent />
-      </NotificationProvider>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <NotificationProvider>
+          <MainContent />
+        </NotificationProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }

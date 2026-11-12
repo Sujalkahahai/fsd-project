@@ -16,6 +16,23 @@ import {
 } from 'lucide-react';
 import api from '../services/api';
 
+const formatDateTime = (dateVal) => {
+  if (!dateVal) return '';
+  const d = new Date(dateVal);
+  if (isNaN(d.getTime())) return '';
+  return d.toLocaleString(undefined, {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  });
+};
+
+const formatDate = (dateVal) => {
+  if (!dateVal) return '';
+  const d = new Date(dateVal);
+  if (isNaN(d.getTime())) return '';
+  return d.toLocaleDateString(undefined, { dateStyle: 'medium' });
+};
+
 export default function TopicDetailModal({ topicId, onClose, onRefresh }) {
   const [topicData, setTopicData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -602,10 +619,7 @@ export default function TopicDetailModal({ topicId, onClose, onRefresh }) {
                                 <p className="text-[11px] text-slate-600 mt-0.5">{log.notes}</p>
                               )}
                               <p className="text-[10px] text-slate-400 mt-0.5">
-                                {new Date(log.createdAt).toLocaleDateString(undefined, {
-                                  dateStyle: 'medium',
-                                  timeStyle: 'short',
-                                })}
+                                {formatDateTime(log.createdAt)}
                               </p>
                             </div>
                           </div>
@@ -717,7 +731,7 @@ export default function TopicDetailModal({ topicId, onClose, onRefresh }) {
                               )}
                             </div>
                             <p className="text-[10px] text-slate-400 mt-1">
-                              Recorded: {new Date(asmt.date || asmt.createdAt).toLocaleDateString(undefined, { dateStyle: 'medium' })}
+                              Recorded: {formatDate(asmt.date || asmt.createdAt)}
                             </p>
                           </div>
 
