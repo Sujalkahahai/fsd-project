@@ -1,8 +1,13 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 
-dotenv.config({ path: path.resolve('server/.env') });
+// Load local server/.env file if it exists (for local development)
+const envPath = path.resolve('server/.env');
+if (fs.existsSync(envPath)) {
+  dotenv.config({ path: envPath });
+}
 
 function sanitizeAndEncodeUri(rawUri) {
   let uri = rawUri.trim();
@@ -29,7 +34,7 @@ function sanitizeAndEncodeUri(rawUri) {
 const connectDB = async () => {
   const rawUri = process.env.MONGODB_URI;
   if (!rawUri) {
-    console.error('MongoDB connection error: MONGODB_URI is not defined in server/.env');
+    console.error('MongoDB connection error: MONGODB_URI environment variable is not defined.');
     process.exit(1);
   }
 
@@ -39,10 +44,10 @@ const connectDB = async () => {
     const conn = await mongoose.connect(uri, {
       serverSelectionTimeoutMS: 5000,
     });
-    console.log(`Connected to MongoDB Atlas: ${conn.connection.host}`);
+    console.log(`Connected to MongoDB: ${conn.connection.host}`);
     return conn;
   } catch (error) {
-    console.error('MongoDB Atlas connection failed:', error.message);
+    console.error('MongoDB connection failed:', error.message);
     throw error;
   }
 };

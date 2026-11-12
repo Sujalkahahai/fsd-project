@@ -18,7 +18,15 @@ import adminRoutes from './routes/admin.js';
 
 const app = express();
 
-app.use(cors());
+const clientOrigin = process.env.CLIENT_ORIGIN;
+const corsOptions = clientOrigin
+  ? {
+      origin: clientOrigin.includes(',') ? clientOrigin.split(',').map((o) => o.trim()) : clientOrigin,
+      credentials: true,
+    }
+  : {};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Health Check Endpoint

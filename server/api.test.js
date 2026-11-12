@@ -20,6 +20,7 @@ const json = (path, options = {}) => {
 };
 
 test.before(async () => {
+  process.env.ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'TestAdmin2026!';
   await connectDB();
   await bootstrapAdminUser();
   await autoSeedTemplates();

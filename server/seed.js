@@ -5,12 +5,17 @@ export async function bootstrapAdminUser() {
   try {
     const adminExists = await User.findOne({ role: 'admin' });
     if (adminExists) {
-      return;
+      return adminExists;
+    }
+
+    const password = process.env.ADMIN_PASSWORD;
+    if (!password) {
+      console.log('ADMIN_PASSWORD environment variable is not set. Skipping automatic admin user creation.');
+      return null;
     }
 
     const name = process.env.ADMIN_NAME || 'Pathlog Admin';
     const email = (process.env.ADMIN_EMAIL || 'admin@pathlog.internal').toLowerCase();
-    const password = process.env.ADMIN_PASSWORD || 'AdminPathlog2026!';
 
     console.log(`Bootstrapping initial admin account for ${email}...`);
     const adminUser = await User.create({
@@ -21,8 +26,10 @@ export async function bootstrapAdminUser() {
       isSuspended: false,
     });
     console.log(`Admin user successfully initialized with ID: ${adminUser.id}`);
+    return adminUser;
   } catch (error) {
     console.error('Error bootstrapping admin user:', error.message);
+    return null;
   }
 }
 
@@ -33,8 +40,11 @@ export async function autoSeedTemplates() {
 
     let admin = await User.findOne({ role: 'admin' });
     if (!admin) {
-      await bootstrapAdminUser();
-      admin = await User.findOne({ role: 'admin' });
+      admin = await bootstrapAdminUser();
+    }
+    if (!admin) {
+      console.log('No administrator found. Skipping template auto-seeding.');
+      return;
     }
 
     const starterTemplates = [

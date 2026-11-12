@@ -7,16 +7,22 @@ import { autoSeedTemplates, bootstrapAdminUser } from './seed.js';
 import User from './models/User.js';
 
 const port = process.env.PORT || 5000;
+const host = '0.0.0.0';
 
 // Create HTTP server wrapping Express app
 const server = http.createServer(app);
 
-// Initialize Socket.IO with CORS
+// Initialize Socket.IO with CORS using CLIENT_ORIGIN
+const clientOrigin = process.env.CLIENT_ORIGIN;
+const allowedOrigins = clientOrigin
+  ? (clientOrigin.includes(',') ? clientOrigin.split(',').map((o) => o.trim()) : clientOrigin)
+  : '*';
+
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_ORIGIN || '*',
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
-    credentials: true,
+    credentials: allowedOrigins !== '*',
   },
 });
 
@@ -116,8 +122,8 @@ async function startServer() {
     await connectDB();
     await bootstrapAdminUser();
     await autoSeedTemplates();
-    server.listen(port, () => {
-      console.log(`Pathlog API with Socket.IO listening on http://localhost:${port}`);
+    server.listen(port, host, () => {
+      console.log(`Pathlog API with Socket.IO listening on http://${host}:${port}`);
     });
   } catch (error) {
     console.error('Failed to start server due to database connection error:', error.message);
