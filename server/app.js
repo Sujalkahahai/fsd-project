@@ -76,6 +76,12 @@ app.use((error, _req, res, _next) => {
 const distPath = path.resolve('dist');
 if (fs.existsSync(distPath)) {
   app.use(express.static(distPath));
+
+  // Never fall back to index.html for missing asset requests (prevents MIME type mismatch errors)
+  app.use('/assets', (_req, res) => {
+    res.status(404).type('text/plain').send('Static asset not found');
+  });
+
   app.use((req, res, next) => {
     if (req.method === 'GET' && !req.path.startsWith('/api')) {
       return res.sendFile(path.join(distPath, 'index.html'));
